@@ -2,11 +2,41 @@
 <script>
   /* global nn */
   
-  const GIF
+  const GIF = 'kisss.gif'
   const COLOR = 'Moccasin'
   
-  function setup () {
+  async function createGif (x, y) {
+    /* async function needed to run await */
+    /* takes a while to run */
+    const gif = await nn.loadImage(GIF)
+    nn.create('img')
+      .set({
+      src: `${GIF}#${Math.random()}`
+    })
+      .css({
+      position: 'absolute',
+      left: x - gif.width / 2,
+      top: y - gif.height / 2,
+    })
+      .addTo('body')
+  }
+  
+  async function setup () {
+    nn.get('body').css({backgroundColor: COLOR})
     
+    const gif = await nn.loadImage(GIF)
+    const colSize = gif.width / 2.4
+    const numCol = nn.width / colSize
+    const rowSize = gif.height / 1.7
+    const numRow = nn.height * 0.70 / rowSize
+    for (let i = 0; i < numCol - 1; i++) {
+      for (let j = 0; j < numRow; j++) {
+          const x = i * colSize
+          const y = j * rowSize
+          createGif (x, y)
+      }
+    }
+
   }
   
   nn.on('load', setup)
